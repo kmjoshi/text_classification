@@ -1,12 +1,19 @@
 # text_classification
-Exploration of text classification from public datasets, especially emotion labels
+Exploration of text classification from public datasets, especially emotion labels. See [PDF](./Emotion_Classification.pdf)
 
-# outline
+# Code
+[Load and save data](./emotion_detection_setup.py): load the datasets in use, preprocess them and save split/tokenized versions as .pkl files. Edit main() function to change output
+
+[Train model](./train_emotion_models.py): train several models, need to edit the script to change parameter space and select model
+
+[API](./EmotionAPI)
+
+# Theory
 - Types of text classification
     - types
         - regression onto numeric data
         - topic modeling (unsupervised)
-    - But there are all these other NLP use-cases that we miss!? by god
+    - But there are all these other NLP use-cases that we miss!
         - Text-generation | Question-answering
         - Syntax identification | POS tagging
         - [EDA](https://github.com/JasonKessler/scattertext)
@@ -30,7 +37,6 @@ Exploration of text classification from public datasets, especially emotion labe
         - validated in academia
         - deployed in industry
         - What is the scope of a hyper-personalized emotion-classification model? What kind of data do we need to train this? 
-        - What are the use-cases for a learner and educator in this model? Can these succeed with measures that are not robust.
 - [EmotionAPI](./EmotionAPI)
 - NLP in history
     - Future of NLP
