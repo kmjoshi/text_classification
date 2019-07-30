@@ -1,0 +1,16 @@
+language: python
+python:
+  - "3.6"
+install:
+  - pip install -r requirements.txt
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN # set in travis.ci
+  on:
+    branch: gh-pages
+  keep_history: true
+  local_dir: "EmotionApp"
+before_script:
+  - export FLASK_APP="EmotionApp/emotionApp.py"
+script: python EmotionApp/emotionApp.py

@@ -4,6 +4,7 @@ def identity_tokenizer(text):
     """
     return text
 
+
 def load_data(filename):
     """ loads data from .pkl files
 
@@ -12,12 +13,12 @@ def load_data(filename):
 
     Returns:
     X_train, X_test, Y_train, Y_test, labels
-    
+
     """
 
     import pickle
     import numpy as np
-    
+
     # load data
     with open(filename, 'rb') as f:
         data = pickle.load(f)
@@ -40,6 +41,7 @@ def load_data(filename):
 
     return X_train, Y_train, X_test, Y_test, labels
 
+
 def keras_preprocessing(text, tokenizer, max_len_seq=191):
     """ preprocess text for keras embedding block
 
@@ -53,9 +55,10 @@ def keras_preprocessing(text, tokenizer, max_len_seq=191):
     """
     from keras.preprocessing.sequence import pad_sequences
     temp = tokenizer.texts_to_sequences(text)
-    temp = pad_sequences(temp, maxlen=max_len_seq, padding='post', 
+    temp = pad_sequences(temp, maxlen=max_len_seq, padding='post',
                          truncating='post')
     return temp
+
 
 def custom_class_score(X_test, Y_test, clf, if_keras=False, tokenizer=None):
     """ Get a custom score by class that is outputted as a table
@@ -66,7 +69,7 @@ def custom_class_score(X_test, Y_test, clf, if_keras=False, tokenizer=None):
     clf (sklearn clf or keras model):
     if_keras (Boolean): to indicate which methods to use
     tokenizer (Tokenizer object): provide tokenizer for preprocessing text
-    
+
     Returns:
     n+6 x n+1 table where n is the number of classes
     n x n populated by the number of values misclassified as another
@@ -74,9 +77,9 @@ def custom_class_score(X_test, Y_test, clf, if_keras=False, tokenizer=None):
     added columns for totals | precision | recall | f1 | pct | mse
 
     """
-    
+
     import numpy as np
-    from sklearn.metrics import precision_score, recall_score, f1_score, make_scorer 
+    from sklearn.metrics import precision_score, recall_score, f1_score, make_scorer
 
     # need to be defensively coded
     if if_keras:
@@ -99,16 +102,18 @@ def custom_class_score(X_test, Y_test, clf, if_keras=False, tokenizer=None):
     recs = np.zeros((5,))
     f1 = np.zeros((5,))
     for i in range(0, 5):
-        precs[i] = precision_score(np.array(Y_test)[:,i], np.array(preds)[:,i])
-        recs[i] = recall_score(np.array(Y_test)[:,i], np.array(preds)[:,i])    
-        f1[i] = f1_score(np.array(Y_test)[:,i], np.array(preds)[:,i])    
+        precs[i] = precision_score(
+            np.array(Y_test)[:, i], np.array(preds)[:, i])
+        recs[i] = recall_score(np.array(Y_test)[:, i], np.array(preds)[:, i])
+        f1[i] = f1_score(np.array(Y_test)[:, i], np.array(preds)[:, i])
     # get mis-labels
-    mislabels = np.zeros((5,5))
+    mislabels = np.zeros((5, 5))
     for i in range(0, len(label_bool)):
         if label_bool[i] == False:
             mislabels[preds.argmax(axis=1)[i], Y_test.argmax(axis=1)[i]] += 1
-    
+
     return mse, pct, precs, recs, f1, mislabels
+
 
 def get_mislabels(X_test, Y_test, labels, clf, file, if_keras=False, tokenizer=None):
     """ save a table of misclassified labels
@@ -120,7 +125,7 @@ def get_mislabels(X_test, Y_test, labels, clf, file, if_keras=False, tokenizer=N
     clf (sklearn clf or keras model):
     if_keras (Boolean): to indicate which methods to use
     tokenizer (Tokenizer object): provide tokenizer for preprocessing text
-    
+
     Returns:
     saves:
         n+6 x n+1 table where n is the number of classes
@@ -129,9 +134,10 @@ def get_mislabels(X_test, Y_test, labels, clf, file, if_keras=False, tokenizer=N
         added columns for totals | precision | recall | f1 | pct | mse
 
     """
-    
+
     import pandas as pd
-    mse, pct, precs, recs, f1, mislabels = custom_class_score(X_test, Y_test, clf, if_keras=if_keras, tokenizer=tokenizer)
+    mse, pct, precs, recs, f1, mislabels = custom_class_score(
+        X_test, Y_test, clf, if_keras=if_keras, tokenizer=tokenizer)
 
     df_mislabels = pd.DataFrame(mislabels, index=labels, columns=labels)
     df_mislabels['predicted_total'] = df_mislabels.sum(axis=1)
@@ -144,9 +150,10 @@ def get_mislabels(X_test, Y_test, labels, clf, file, if_keras=False, tokenizer=N
 
     df_mislabels.to_csv(file + '_mislabels.csv')
 
-def create_tokenizer(infile=='./split_text_data.pkl', outfile='embedding_matrix.pkl'):
+
+def create_tokenizer(infile='./split_text_data.pkl', outfile='embedding_matrix.pkl'):
     """ create and save a tokenizer on our dataset
-    
+
     Parameters:
     infile (str): filename to load dict of data
     outfile (str): filename to save embedding matrix
@@ -164,7 +171,7 @@ def create_tokenizer(infile=='./split_text_data.pkl', outfile='embedding_matrix.
     tokenizer = Tokenizer()
     tokenizer.fit_on_texts(X_train)
     tokenizer.fit_on_texts(X_test)
-    
+
     # load fastText embeddings model
     import fastText
     model_name = '../datasets/fastText_embeddings/cc.en.300.bin'
@@ -175,7 +182,7 @@ def create_tokenizer(infile=='./split_text_data.pkl', outfile='embedding_matrix.
     embedding_matrix = np.zeros((nb_words, 300))
     for word, i in tokenizer.word_index.items():
         embedding_matrix[i-1] = ft_embeddings.get_word_vector(word)
-    
+
     import pickle
     with open(outfile, 'wb') as f:
         pickle.dump(embedding_matrix, f, protocol=pickle.HIGHEST_PROTOCOL)
