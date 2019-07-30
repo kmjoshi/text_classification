@@ -13,4 +13,4 @@ deploy:
   local_dir: "EmotionApp"
 before_script:
   - export FLASK_APP="EmotionApp/emotionApp.py"
-script: python EmotionApp/emotionApp.py
+# script: python EmotionApp/emotionApp.py
