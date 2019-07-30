@@ -1,2 +1,4 @@
 EmotionAPI/Tfidf_preprocessor.pkl filter=lfs diff=lfs merge=lfs -text
 EmotionAPI/best_model_mlp.pkl filter=lfs diff=lfs merge=lfs -text
+EmotionApp/Tfidf_preprocessor.pkl filter=lfs diff=lfs merge=lfs -text
+EmotionApp/best_model_mlp.pkl filter=lfs diff=lfs merge=lfs -text
