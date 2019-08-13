@@ -1,0 +1,8 @@
+uwsgi
+Flask
+Flask-RESTful
+nltk
+numpy
+requests
+scikit-learn
+scipy
