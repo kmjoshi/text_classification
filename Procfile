@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath EmotionApp main:app
+web: uwsgi EmotionApp/uwsgi.ini
