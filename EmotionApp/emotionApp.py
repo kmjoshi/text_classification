@@ -25,8 +25,9 @@ def text_preprocessing(s):
 
 
 def load_model():
-    import os
-    dir_path = os.path.dirname(os.path.realpath(__file__))
+    # import os
+    # dir_path = os.path.dirname(os.path.realpath(__file__))
+    dir_path = ''
 
     model_name = dir_path + 'best_model_mlp.pkl'
     model = joblib.load(model_name)
