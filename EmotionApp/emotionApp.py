@@ -28,10 +28,10 @@ def load_model():
     import os
     dir_path = os.path.dirname(os.path.realpath(__file__))
 
-    model_name = dir_path + './best_model_mlp.pkl'
+    model_name = dir_path + 'best_model_mlp.pkl'
     model = joblib.load(model_name)
 
-    preprocessor_name = dir_path + './Tfidf_preprocessor.pkl'
+    preprocessor_name = dir_path + 'Tfidf_preprocessor.pkl'
     preprocessor = joblib.load(preprocessor_name)
 
     labels = ['anger', 'disgust', 'fear', 'joy', 'sadness']
