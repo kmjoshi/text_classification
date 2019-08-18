@@ -1,9 +1,9 @@
-
-import os
-from flask import Flask, request, render_template, jsonify
+from flask import Flask
+from flask_restful import reqparse, abort, Api, Resource
 from sklearn.externals import joblib
 
 # https://stackoverflow.com/questions/12277933/send-data-from-a-textbox-into-flask
+# https://towardsdatascience.com/deploying-a-machine-learning-model-as-a-rest-api-4a03b865c166
 
 
 def text_preprocessing(s):
@@ -24,43 +24,50 @@ def text_preprocessing(s):
     return s
 
 
-app = Flask(__name__)
+def load_model():
+    import os
+    dir_path = os.path.dirname(os.path.realpath(__file__))
 
-# get file path
-dir_path = os.path.dirname(os.path.realpath(__file__))
+    model_name = dir_path + './best_model_mlp.pkl'
+    model = joblib.load(model_name)
 
-model_name = dir_path + '/best_model_mlp.pkl'
-model = joblib.load(model_name)
-
-preprocessor_name = dir_path + '/Tfidf_preprocessor.pkl'
-preprocessor = joblib.load(preprocessor_name)
-
-
-def predict(s):
-    # s: single str object
-
-    pred = model.predict_proba(
-        preprocessor.transform(
-            [text_preprocessing(s)]))
+    preprocessor_name = dir_path + './Tfidf_preprocessor.pkl'
+    preprocessor = joblib.load(preprocessor_name)
 
     labels = ['anger', 'disgust', 'fear', 'joy', 'sadness']
 
-    print(pred)
-    output = dict(zip(labels, [round(x*100, 2) for x in pred[0]]))
-
-    return output
+    return model, preprocessor, labels
 
 
-@app.route("/")
-def my_form():
-    return render_template('my-form.html')
+app = Flask(__name__)
+api = Api(app)
+
+model, preprocessor, labels = load_model()
+
+# argument parsing
+parser = reqparse.RequestParser()
+parser.add_argument('query')
 
 
-@app.route("/", methods=['POST'])
-def my_form_post():
-    text = request.form['text']
-    return jsonify(predict(text))
+class PredictEmotion(Resource):
+    def get(self):
+        # use parser and find the user's query
+        args = parser.parse_args()
+        user_query = args['query']
 
+        pred = model.predict_proba(
+            preprocessor.transform(
+                [text_preprocessing(user_query)]))
+
+        output = dict(zip(labels, [round(x*100, 2) for x in pred[0]]))
+
+        return output
+
+
+api.add_resource(PredictEmotion, '/')
+
+# "EmotionAPI is a small 3-layer NN text-classification model trained on a
+# combination of annotated tweets and ISEAR survey data"
 
 if __name__ == '__main__':
     app.run(debug=True)
