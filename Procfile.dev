@@ -1,0 +1,2 @@
+web: waitress-serve EmotionApp.emotionApp:app
+log: tail -f log/dev.log
