@@ -8,7 +8,9 @@ Exploration of text classification from public datasets, especially emotion labe
 
 [Train model](./train_emotion_models.py): train several models, need to edit the script to change parameter space and select model
 
-[API](./EmotionAPI): `curl -X GET big-5-emotion-app.herokuapp.com -d query='I love learning!'`
+[API](./EmotionAPI/): `curl -X GET big-5-emotion-app.herokuapp.com -d query='I love learning!'`
+
+[Streamlit App](./EmotionAPI/emotionApp.py)
 
 <!-- # Theory
 
