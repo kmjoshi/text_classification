@@ -2,9 +2,9 @@ from flask import Flask
 from flask_restful import reqparse, abort, Api, Resource
 from sklearn.externals import joblib
 
+load_dotenv()
 # https://stackoverflow.com/questions/12277933/send-data-from-a-textbox-into-flask
 # https://towardsdatascience.com/deploying-a-machine-learning-model-as-a-rest-api-4a03b865c166
-
 
 def text_preprocessing(s):
     import re
@@ -23,11 +23,9 @@ def text_preprocessing(s):
 
     return s
 
-
 def load_model():
     import os
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    # dir_path = ''
 
     model_name = dir_path + '/best_model_mlp.pkl'
     print(model_name)
@@ -87,4 +85,4 @@ api.add_resource(PredictEmotion, '/')
 # api.add_resource(PredictEmotionBiLSTM, '/bilstm')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
