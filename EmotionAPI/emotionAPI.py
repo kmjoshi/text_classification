@@ -2,7 +2,6 @@ from flask import Flask
 from flask_restful import reqparse, abort, Api, Resource
 from sklearn.externals import joblib
 
-load_dotenv()
 # https://stackoverflow.com/questions/12277933/send-data-from-a-textbox-into-flask
 # https://towardsdatascience.com/deploying-a-machine-learning-model-as-a-rest-api-4a03b865c166
 
