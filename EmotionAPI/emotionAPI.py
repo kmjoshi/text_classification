@@ -85,4 +85,4 @@ api.add_resource(PredictEmotion, '/')
 # api.add_resource(PredictEmotionBiLSTM, '/bilstm')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

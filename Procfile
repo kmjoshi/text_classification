@@ -1,4 +1,1 @@
-web: uwsgi EmotionAPI/uwsgi.ini && \
-sh EmotionAPI/dl.sh && \
-sh EmotionAPI/setup.sh && \
-streamlit run EmotionAPI/emotionApp.py
+web: sh EmotionAPI/dl.sh && uwsgi EmotionAPI/uwsgi.ini && sh EmotionAPI/setup.sh && streamlit run EmotionAPI/emotionApp.py
