@@ -5,7 +5,7 @@ nltk==3.4.5
 numpy==1.16.2
 requests==2.21.0
 scikit-learn==0.22
-scipy==1.2.1
+scipy==1.10.0
 keras==2.3.0
 pandas==0.24
 streamlit
